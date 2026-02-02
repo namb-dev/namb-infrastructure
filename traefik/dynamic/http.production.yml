@@ -36,10 +36,13 @@ http:
         customResponseHeaders:
           X-Frame-Options: "DENY"
           Permissions-Policy: "geolocation=(), microphone=(), camera=(), payment=()"
+    # Cache static assets (fonts, CSS, JS, images)
+    cacheStaticAssets:
+      headers:
+        customResponseHeaders:
+          Cache-Control: "public, max-age=31536000, immutable"
+          Access-Control-Allow-Origin: "*"
 
-    # Compression middleware
-    compress:
-      compress: {}
 
 
   routers:

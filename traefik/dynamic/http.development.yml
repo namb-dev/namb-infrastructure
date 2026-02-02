@@ -22,6 +22,32 @@ http:
           - "5.136.87.206/32" # my
           - "79.132.136.31/32" # vpn
           - "127.0.0.1/32"
+    compress-response:
+      compress: {}
+    security-headers:
+      headers:
+        forceSTSHeader: true
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+        customResponseHeaders:
+          X-Frame-Options: "SAMEORIGIN"
+    assets-cache:
+      headers:
+        customResponseHeaders:
+          Cache-Control: "public,max-age=3600"
+    miniapp-default:
+      chain:
+        middlewares:
+          - compress-response
+          - security-headers
+    miniapp-assets:
+      chain:
+        middlewares:
+          - compress-response
+          - assets-cache
 
   routers:
     dashboard:

@@ -36,22 +36,10 @@ http:
         customResponseHeaders:
           X-Frame-Options: "DENY"
           Permissions-Policy: "geolocation=(), microphone=(), camera=(), payment=()"
-    staticCache:
-      headers:
-        customResponseHeaders:
-          Cache-Control: "public, max-age=31536000, immutable"
-          X-Content-Type-Options: "nosniff"
 
     # Compression middleware
     compress:
       compress: {}
-
-    # Combined middleware for assets
-    assetOptimization:
-      chain:
-        middlewares:
-          - compress
-          - staticCache
 
 
   routers:

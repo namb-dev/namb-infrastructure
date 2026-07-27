@@ -1,0 +1,23 @@
+services:
+  traefik:
+    image: traefik:v3.3
+    container_name: tg-reverse-proxy
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "8443:8443"
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml.template:ro
+      - ./dynamic/http.yml.template:/etc/traefik/dynamic/http.yml.template:ro
+      - ./dynamic/tls.yml:/etc/traefik/dynamic/tls.yml:ro
+      - ./acme.json:/acme.json
+      - ./entrypoint.sh:/entrypoint.sh:ro
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    networks:
+      - tg_proxy
+
+networks:
+  tg_proxy:
+    name: tg_proxy

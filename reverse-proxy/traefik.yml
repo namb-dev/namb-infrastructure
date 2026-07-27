@@ -1,0 +1,24 @@
+# Standalone Traefik for Telegram webhooks on EE VPS.
+# HTTPS on 8443 (443 can stay with Xray). Cert via HTTP-01 on :80.
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":8443"
+
+providers:
+  file:
+    directory: "/etc/traefik/dynamic"
+    watch: true
+
+api:
+  dashboard: false
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: "${ACME_EMAIL}"
+      storage: /acme.json
+      httpChallenge:
+        entryPoint: http

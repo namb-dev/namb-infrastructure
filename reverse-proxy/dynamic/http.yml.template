@@ -17,12 +17,15 @@ http:
         certResolver: letsencrypt
 
   services:
+    # passHostHeader: false — RF Traefik matches Host(APP_HOST), not tg-hook.*
     tg-api-prod:
       loadBalancer:
+        passHostHeader: false
         servers:
           - url: "{{BACKEND_URL_PROD}}"
 
     tg-api-dev:
       loadBalancer:
+        passHostHeader: false
         servers:
           - url: "{{BACKEND_URL_DEV}}"

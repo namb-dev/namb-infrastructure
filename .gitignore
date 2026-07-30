@@ -6,6 +6,9 @@
 /storage/*.key
 /vendor
 traefik/.env
+reverse-proxy/.env
+reverse-proxy/acme.json
+reverse-proxy/dynamic/http.yml
 .env.backup
 .phpunit.result.cache
 Homestead.json

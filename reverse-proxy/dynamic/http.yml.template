@@ -1,0 +1,15 @@
+http:
+  routers:
+    tg-webhook:
+      rule: "Host(`{{WEBHOOK_HOST}}`)"
+      entryPoints:
+        - https
+      service: tg-api
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    tg-api:
+      loadBalancer:
+        servers:
+          - url: "{{BACKEND_URL}}"

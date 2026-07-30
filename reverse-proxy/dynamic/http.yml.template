@@ -1,15 +1,28 @@
 http:
   routers:
-    tg-webhook:
-      rule: "Host(`{{WEBHOOK_HOST}}`)"
+    tg-webhook-prod:
+      rule: "Host(`{{WEBHOOK_HOST_PROD}}`)"
       entryPoints:
         - https
-      service: tg-api
+      service: tg-api-prod
+      tls:
+        certResolver: letsencrypt
+
+    tg-webhook-dev:
+      rule: "Host(`{{WEBHOOK_HOST_DEV}}`)"
+      entryPoints:
+        - https
+      service: tg-api-dev
       tls:
         certResolver: letsencrypt
 
   services:
-    tg-api:
+    tg-api-prod:
       loadBalancer:
         servers:
-          - url: "{{BACKEND_URL}}"
+          - url: "{{BACKEND_URL_PROD}}"
+
+    tg-api-dev:
+      loadBalancer:
+        servers:
+          - url: "{{BACKEND_URL_DEV}}"

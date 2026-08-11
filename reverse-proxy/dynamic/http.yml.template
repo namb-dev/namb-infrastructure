@@ -1,7 +1,7 @@
 http:
   routers:
     tg-webhook-prod:
-      rule: "Host(`{{WEBHOOK_HOST_PROD}}`)"
+      rule: "Host(`{{WEBHOOK_HOST_PROD}}`) && PathPrefix(`/api/webhook`)"
       entryPoints:
         - https
       service: tg-api-prod
@@ -9,7 +9,7 @@ http:
         certResolver: letsencrypt
 
     tg-webhook-dev:
-      rule: "Host(`{{WEBHOOK_HOST_DEV}}`)"
+      rule: "Host(`{{WEBHOOK_HOST_DEV}}`) && PathPrefix(`/api/webhook`)"
       entryPoints:
         - https
       service: tg-api-dev

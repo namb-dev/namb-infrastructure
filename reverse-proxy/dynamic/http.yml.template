@@ -1,9 +1,22 @@
 http:
+  middlewares:
+    # RF Traefik routers match Host(APP_HOST), not tg-hook.* or the WG IP.
+    backend-host-prod:
+      headers:
+        customRequestHeaders:
+          Host: "{{BACKEND_HOST_PROD}}"
+    backend-host-dev:
+      headers:
+        customRequestHeaders:
+          Host: "{{BACKEND_HOST_DEV}}"
+
   routers:
     tg-webhook-prod:
       rule: "Host(`{{WEBHOOK_HOST_PROD}}`) && PathPrefix(`/api/webhook`)"
       entryPoints:
         - https
+      middlewares:
+        - backend-host-prod
       service: tg-api-prod
       tls:
         certResolver: letsencrypt
@@ -12,20 +25,22 @@ http:
       rule: "Host(`{{WEBHOOK_HOST_DEV}}`) && PathPrefix(`/api/webhook`)"
       entryPoints:
         - https
+      middlewares:
+        - backend-host-dev
       service: tg-api-dev
       tls:
         certResolver: letsencrypt
 
   services:
-    # passHostHeader: false — RF Traefik matches Host(APP_HOST), not tg-hook.*
+    # Forward to RF over public IP (http://IP:8000). Never https://tg:443 (Xray→Google).
     tg-api-prod:
       loadBalancer:
-        passHostHeader: false
+        passHostHeader: true
         servers:
           - url: "{{BACKEND_URL_PROD}}"
 
     tg-api-dev:
       loadBalancer:
-        passHostHeader: false
+        passHostHeader: true
         servers:
           - url: "{{BACKEND_URL_DEV}}"

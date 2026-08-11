@@ -15,6 +15,11 @@ providers:
 api:
   dashboard: false
 
+log:
+  level: INFO
+
+accessLog: {}
+
 certificatesResolvers:
   letsencrypt:
     acme:

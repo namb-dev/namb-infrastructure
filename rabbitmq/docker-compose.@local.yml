@@ -1,0 +1,12 @@
+services:
+  rabbitmq:
+    environment:
+      RABBITMQ_ADVANCED_CONFIG_FILE: "/etc/rabbitmq/advanced.config"
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER?}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD?}
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit tcp_listen_options [{backlog,4096},{nodelay,true},{linger,{true,0}},{exit_on_close,false},{keepalive,true}] disk_free_limit 2147483648 handshake_timeout 60000 consumer_timeout 3600000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.rabbitmq.rule=Host(`${RABBITMQ_SUBDOMAIN}.${BASE_DOMAIN}`)
+      - traefik.http.routers.rabbitmq.entrypoints=http
+      - traefik.http.services.rabbitmq.loadbalancer.server.port=15672

@@ -1,0 +1,31 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.12.4-management
+    hostname: rabbitmq
+    container_name: rabbitmq
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: >
+      sh -c 'echo "[{rabbitmq_management, [{path_prefix, \"${RABBITMQ_PATH_PREFIX}\"}]}]." > /etc/rabbitmq/advanced.config && rabbitmq-server'
+    ports:
+      - "127.0.0.1:5672:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      start_period: 10s
+      start_interval: 3s
+      timeout: 15s
+      retries: 3
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - conversion_app
+
+networks:
+  conversion_app:
+    name: conversion_app
+    external: true
+
+volumes:
+  rabbitmq_data:

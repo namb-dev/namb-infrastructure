@@ -9,6 +9,8 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER?}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD?}
+    entrypoint: ["/bin/bash", "/ensure-user.sh"]
+    command: ["rabbitmq-server"]
     ports:
       - "127.0.0.1:5672:5672"
     healthcheck:
@@ -21,6 +23,7 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
       - ./conf.d/20-management.conf:/etc/rabbitmq/conf.d/20-management.conf:ro
+      - ./ensure-user.sh:/ensure-user.sh:ro
     networks:
       - conversion_app
 

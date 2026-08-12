@@ -13,6 +13,13 @@ services:
       - dozzle_data:/data
     networks:
       - conversion_app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dozzle.rule=Host(`dozzle.${BASE_DOMAIN}`)
+      - traefik.http.routers.dozzle.entrypoints=https
+      - traefik.http.routers.dozzle.middlewares=dashboard-ip-whitelist@file
+      - traefik.http.routers.dozzle.tls.certresolver=letsencrypt
+      - traefik.http.services.dozzle.loadbalancer.server.port=8080
 
 networks:
   conversion_app:

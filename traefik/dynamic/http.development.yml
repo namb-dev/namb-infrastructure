@@ -51,19 +51,3 @@ http:
       service: api@internal
       tls:
         certResolver: letsencrypt
-
-    dozzle:
-      rule: "Host(`dozzle.dev.nambapp.ru`)"
-      entryPoints:
-        - https
-      middlewares:
-        - dashboard-ip-whitelist
-      service: dozzle
-      tls:
-        certResolver: letsencrypt
-
-  services:
-    dozzle:
-      loadBalancer:
-        servers:
-          - url: "http://dozzle:8080"

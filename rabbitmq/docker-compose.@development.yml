@@ -1,9 +1,6 @@
 services:
   rabbitmq:
     environment:
-      RABBITMQ_ADVANCED_CONFIG_FILE: "/etc/rabbitmq/advanced.config"
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER?}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD?}
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit tcp_listen_options [{backlog,4096},{nodelay,true},{linger,{true,0}},{exit_on_close,false},{keepalive,true}] log_levels [{connection,error},{default,error}] disk_free_limit 10737418240 handshake_timeout 60000 consumer_timeout 360000"
     labels:
       - traefik.enable=true
@@ -12,7 +9,8 @@ services:
       - traefik.http.routers.rabbitmq-http.middlewares=dashboard-ip-whitelist@file,redirect-to-https@file
       - traefik.http.routers.rabbitmq-https.rule=Host(`${RABBITMQ_SUBDOMAIN}.${BASE_DOMAIN}`)
       - traefik.http.routers.rabbitmq-https.entrypoints=https
-      - traefik.http.routers.rabbitmq-https.middlewares=dashboard-ip-whitelist@file
+      - traefik.http.routers.rabbitmq-https.middlewares=dashboard-ip-whitelist@file,rabbitmq-autologin
       - traefik.http.routers.rabbitmq-https.tls=true
       - traefik.http.routers.rabbitmq-https.tls.certresolver=letsencrypt
       - traefik.http.services.rabbitmq.loadbalancer.server.port=15672
+      - traefik.http.middlewares.rabbitmq-autologin.headers.customrequestheaders.Authorization=Basic ${RABBITMQ_BASIC_AUTH?}

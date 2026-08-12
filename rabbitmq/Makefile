@@ -22,6 +22,14 @@ env:
 	else \
 		echo "Warning: .env.$(ENV) not found. Only .env.base content added."; \
 	fi
+	@set -a; . ./$(ENV_FILE); set +a; \
+	if [ -z "$$RABBITMQ_USER" ] || [ -z "$$RABBITMQ_PASSWORD" ]; then \
+		echo "Error: set RABBITMQ_USER and RABBITMQ_PASSWORD in .env.$(ENV) (must match app credentials)." >&2; \
+		exit 1; \
+	fi; \
+	AUTH=$$(printf '%s' "$$RABBITMQ_USER:$$RABBITMQ_PASSWORD" | base64 | tr -d '\n'); \
+	echo "RABBITMQ_BASIC_AUTH=$$AUTH" >> $(ENV_FILE); \
+	echo "RABBITMQ_BASIC_AUTH generated for management autologin."
 	@echo "$(ENV_FILE) has been created successfully."
 
 up:

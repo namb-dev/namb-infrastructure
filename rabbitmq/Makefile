@@ -54,4 +54,10 @@ deploy: ensure-auth
 	docker compose -f docker-compose.yml -f docker-compose.@$(ENV).yml up -d --force-recreate
 	@echo "$(ENV) environment has been started successfully."
 
-.PHONY: env ensure-auth up build deploy
+# Stops container and deletes rabbitmq_data volume (queues/users reset).
+wipe:
+	@echo "Wiping RabbitMQ container and data volume..."
+	docker compose -f docker-compose.yml -f docker-compose.@$(ENV).yml down -v --remove-orphans
+	@echo "Wiped. Set credentials in .env, then: make up ENV=$(ENV)"
+
+.PHONY: env ensure-auth up build deploy wipe

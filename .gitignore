@@ -6,6 +6,7 @@
 /storage/*.key
 /vendor
 traefik/.env
+dozzle/.env
 reverse-proxy/.env
 reverse-proxy/acme.json
 reverse-proxy/dynamic/http.yml

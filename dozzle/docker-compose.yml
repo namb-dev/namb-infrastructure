@@ -1,0 +1,23 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DOZZLE_HOSTNAME: ${APP_ENV}
+      DOZZLE_NO_ANALYTICS: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - dozzle_data:/data
+    networks:
+      - conversion_app
+
+networks:
+  conversion_app:
+    name: conversion_app
+    external: true
+
+volumes:
+  dozzle_data:

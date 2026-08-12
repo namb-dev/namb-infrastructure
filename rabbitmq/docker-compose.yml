@@ -20,6 +20,7 @@ services:
       retries: 5
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+      - ./conf.d/20-management.conf:/etc/rabbitmq/conf.d/20-management.conf:ro
     networks:
       - conversion_app
 

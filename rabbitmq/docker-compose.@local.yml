@@ -6,6 +6,4 @@ services:
       - traefik.enable=true
       - traefik.http.routers.rabbitmq.rule=Host(`${RABBITMQ_SUBDOMAIN}.${BASE_DOMAIN}`)
       - traefik.http.routers.rabbitmq.entrypoints=http
-      - traefik.http.routers.rabbitmq.middlewares=rabbitmq-autologin
       - traefik.http.services.rabbitmq.loadbalancer.server.port=15672
-      - traefik.http.middlewares.rabbitmq-autologin.headers.customrequestheaders.Authorization=Basic ${RABBITMQ_BASIC_AUTH?}

@@ -43,7 +43,7 @@ http:
 
   routers:
     dashboard:
-      rule: "Host(`dashboard.dev.nambapp.ru`)"
+      rule: "Host(`gw.dev.nambapp.ru`)"
       entryPoints:
         - https
       middlewares:

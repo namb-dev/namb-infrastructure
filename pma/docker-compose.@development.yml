@@ -1,0 +1,13 @@
+services:
+  pma:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pma-http.rule=Host(`db.${BASE_DOMAIN}`)
+      - traefik.http.routers.pma-http.entrypoints=http
+      - traefik.http.routers.pma-http.middlewares=dashboard-ip-whitelist@file,redirect-to-https@file
+      - traefik.http.routers.pma-https.rule=Host(`db.${BASE_DOMAIN}`)
+      - traefik.http.routers.pma-https.entrypoints=https
+      - traefik.http.routers.pma-https.middlewares=dashboard-ip-whitelist@file
+      - traefik.http.routers.pma-https.tls=true
+      - traefik.http.routers.pma-https.tls.certresolver=letsencrypt
+      - traefik.http.services.pma.loadbalancer.server.port=80

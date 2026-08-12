@@ -1,0 +1,21 @@
+services:
+  pma:
+    image: phpmyadmin:latest
+    container_name: pma
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PMA_HOSTS: ${PMA_HOSTS?}
+      PMA_PORT: ${PMA_PORT?}
+      PMA_VERBOSES: ${PMA_VERBOSES?}
+      PMA_ABSOLUTE_URI: ${PMA_ABSOLUTE_URI?}
+    volumes:
+      - ./config.user.inc.php:/etc/phpmyadmin/config.user.inc.php:ro
+    networks:
+      - conversion_app
+
+networks:
+  conversion_app:
+    name: conversion_app
+    external: true

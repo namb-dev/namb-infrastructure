@@ -1,0 +1,7 @@
+services:
+  pma:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pma.rule=Host(`db.${BASE_DOMAIN}`)
+      - traefik.http.routers.pma.entrypoints=http
+      - traefik.http.services.pma.loadbalancer.server.port=80

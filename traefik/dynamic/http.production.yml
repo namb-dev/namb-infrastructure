@@ -19,8 +19,7 @@ http:
     dashboard-ip-whitelist:
       ipWhiteList:
         sourceRange:
-          - "5.136.87.206/32" # my
-          - "79.132.136.31/32" # vpn
+          - "5.101.112.66/32" # vpn
           - "127.0.0.1/32"
     compress-response:
       compress: {}

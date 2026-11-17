@@ -9,6 +9,8 @@ traefik/.env
 dozzle/.env
 rabbitmq/.env
 pma/.env
+monitor/.env
+status/.env
 reverse-proxy/.env
 reverse-proxy/acme.json
 reverse-proxy/dynamic/http.yml

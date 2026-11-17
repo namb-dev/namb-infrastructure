@@ -1,0 +1,31 @@
+services:
+  status:
+    # >=2.2 required for NOTIFICATION_PROXY + socks5 (Telegram via EE proxy from RF).
+    image: louislam/uptime-kuma:2.5.11
+    container_name: status
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Outbound proxy for Telegram (and other notification providers).
+      # Same SOCKS as tg_api TELEGRAM_PROXY, e.g. socks5://host:port
+      # Empty = direct (local / when Telegram is reachable).
+      NOTIFICATION_PROXY: ${NOTIFICATION_PROXY:-}
+    volumes:
+      - status_data:/app/data
+    mem_limit: 192m
+    networks:
+      - conversion_app
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  conversion_app:
+    name: conversion_app
+    external: true
+
+volumes:
+  status_data:

@@ -1,0 +1,13 @@
+services:
+  grafana:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.monitor-http.rule=Host(`monitor.${BASE_DOMAIN}`)
+      - traefik.http.routers.monitor-http.entrypoints=http
+      - traefik.http.routers.monitor-http.middlewares=dashboard-ip-whitelist@file,redirect-to-https@file
+      - traefik.http.routers.monitor-https.rule=Host(`monitor.${BASE_DOMAIN}`)
+      - traefik.http.routers.monitor-https.entrypoints=https
+      - traefik.http.routers.monitor-https.middlewares=dashboard-ip-whitelist@file
+      - traefik.http.routers.monitor-https.tls=true
+      - traefik.http.routers.monitor-https.tls.certresolver=letsencrypt
+      - traefik.http.services.monitor.loadbalancer.server.port=3000

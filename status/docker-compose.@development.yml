@@ -1,0 +1,13 @@
+services:
+  status:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.status-http.rule=Host(`status.${BASE_DOMAIN}`)
+      - traefik.http.routers.status-http.entrypoints=http
+      - traefik.http.routers.status-http.middlewares=dashboard-ip-whitelist@file,redirect-to-https@file
+      - traefik.http.routers.status-https.rule=Host(`status.${BASE_DOMAIN}`)
+      - traefik.http.routers.status-https.entrypoints=https
+      - traefik.http.routers.status-https.middlewares=dashboard-ip-whitelist@file
+      - traefik.http.routers.status-https.tls=true
+      - traefik.http.routers.status-https.tls.certresolver=letsencrypt
+      - traefik.http.services.status.loadbalancer.server.port=3001

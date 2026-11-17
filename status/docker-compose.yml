@@ -13,6 +13,9 @@ services:
       NOTIFICATION_PROXY: ${NOTIFICATION_PROXY:-}
     volumes:
       - status_data:/app/data
+      # Docker monitors (container up / health). Socket = full Docker API access;
+      # keep status.* behind IP whitelist (already set). :ro does not make the API read-only.
+      - /var/run/docker.sock:/var/run/docker.sock
     mem_limit: 192m
     networks:
       - conversion_app

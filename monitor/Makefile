@@ -23,7 +23,7 @@ env:
 		echo "Warning: .env.$(ENV) not found. Only .env.base content added."; \
 	fi
 	@echo "$(ENV_FILE) has been created successfully."
-	@echo "Set GRAFANA_ADMIN_PASSWORD in $(ENV_FILE), then: make up ENV=$(ENV)"
+	@echo "Set GRAFANA_ADMIN_PASSWORD and HTTP_PROXY/HTTPS_PROXY/ALL_PROXY in $(ENV_FILE) if Telegram needs EE SOCKS, then: make up ENV=$(ENV)"
 
 ensure-creds:
 	@set -a; . ./$(ENV_FILE); set +a; \
